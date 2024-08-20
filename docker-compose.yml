@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: filemancer_u
+      POSTGRES_PASSWORD: filemancer
+      POSTGRES_DB: filemancer
+      
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - pgnetwork
+
+volumes:
+  pgdata:
+
+networks:
+  pgnetwork:

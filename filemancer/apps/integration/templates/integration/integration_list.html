@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block added_css %}
+    
+<style>
+    .pagination {
+        text-align: center; /* Center align the pagination controls */
+        margin-bottom: 20px; /* Add some space below the pagination controls */
+    }
+    .pagination ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: inline-block; /* Inline block to allow horizontal alignment */
+    }
+    .pagination li {
+        display: inline; /* Display list items horizontally */
+        margin: 0 5px; /* Space between page numbers */
+    }
+    .pagination a {
+        text-decoration: none;
+        color: blue;
+    }
+    .pagination strong {
+        font-weight: bold;
+        color: black;
+    }
+</style>
+{% endblock %}
+
+<!-- Sidebar Start -->
+{% block sidebar %}
+{% include 'common/sidebar.html' %}
+{% endblock %}
+<!-- Sidebar End -->
+
+
+<!-- Navbar Start -->
+{% block navbar %}
+{% include 'common/navbar.html' %}
+{% endblock %}
+<!-- Navbar End -->
+
+
+{% block content %}
+
+
+ <!-- Table Start -->
+ <div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+
+        <div class="col-sm-12 col-xl-12" >
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" >
+                    <a href="#" class="nav-link ">File Uploader</a>
+                    <a href="#" class="nav-link active">Uploaded Details</a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="col-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Responsive Table</h6>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">File Name</th>
+                                <th scope="col">Upload Date</th>
+                                <th scope="col">Associated Task</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detail in file_upload_context %}
+                            <tr>
+                                <th scope="row">{{detail.id}}</th>
+                                <td>{{ detail.file }}</td>
+                                <td>{{ detail.upload_date }}</td>
+                                <td>{{ detail.selected_tasks }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination Controls -->
+                    <div class="pagination">
+                        {% if is_paginated %}
+                            <ul>
+                                {% if page_obj.has_previous %}
+                                    <li><a href="?page=1">&laquo; first</a></li>
+                                    <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                                {% endif %}
+
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li><strong>{{ num }}</strong></li>
+                                    {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+                                        <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                                    <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+<!-- Footer Start -->
+{% block footer %}
+{% include 'common/footer.html' %}
+{% endblock %}
+<!-- Footer End -->
